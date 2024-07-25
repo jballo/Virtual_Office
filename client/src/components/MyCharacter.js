@@ -7,6 +7,8 @@ import {TILE_SIZE} from './mapConstants';
 import {loadCharacter} from './slices/statusSlice';
 import { MY_CHARACTER_INIT_CONFIG } from './characterConstants';
 import {update as updateAllCharactersData} from './slices/allCharactersSlice'
+import { set, ref, remove } from 'firebase/database';
+import { firebaseDatabase } from '../firebase/firebase';
 
 
 function MyCharacter({ myCharactersData, loadCharacter, updateAllCharactersData, webrtcSocket }) {
@@ -17,10 +19,26 @@ function MyCharacter({ myCharactersData, loadCharacter, updateAllCharactersData,
             socketId: webrtcSocket.id,
         };
 
-        const users = {};
-        const myId = MY_CHARACTER_INIT_CONFIG.id;
-        users[myId] = myInitData;
-        updateAllCharactersData(users);
+        // Create a reference to the users in firebase
+        const usersRef = ref(firebaseDatabase, 'users/' + MY_CHARACTER_INIT_CONFIG.id);
+
+        // Initialize the myUsers data in the users reference for firebase
+        set(usersRef, myInitData);
+
+        return () => {
+            // Initialize reference to my user in Firebase
+            var myCharcterRef = ref(firebaseDatabase, 'users/' + MY_CHARACTER_INIT_CONFIG.id);
+
+            // Remove user for which reference points to in Firebase
+            remove(myCharcterRef)
+                .then(function() {
+                    console.log("MyCharacter remove succeeded.");
+                })
+                .catch(function(error) {
+                    console.log("MyCharacter remove failed: " + error.message)
+                });
+        }
+
     }, [webrtcSocket]);
 
     useEffect(() => {

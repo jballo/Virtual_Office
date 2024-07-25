@@ -6,6 +6,9 @@ import {MOVE_DIRECTIONS, MAP_DIMENSIONS, TILE_SIZE} from './mapConstants';
 import { MY_CHARACTER_INIT_CONFIG } from './characterConstants';
 import {checkMapCollision} from './utils';
 import {update as updateAllCharactersData} from './slices/allCharactersSlice'
+import {set, ref} from 'firebase/database';
+import { firebaseDatabase } from '../firebase/firebase';
+import { FirebaseListener } from './FirebaseListener';
 
 
 const GameLoop = ({children, allCharactersData, updateAllCharactersData}) => {
@@ -30,27 +33,22 @@ const GameLoop = ({children, allCharactersData, updateAllCharactersData}) => {
             // TODO: Add your move logic here
             // Log key being pressed
             console.log("Key pressed.")
-            // logging key pressed and movement
-            console.log("Key " + key + ": " + MOVE_DIRECTIONS[key]);
-
-            // logging current x and y coordinates when keys are pressed
-            console.log("X: " + currentPosition["x"] + ", Y: " + currentPosition["y"]);
             
             // Extract movement from an array (ex. [0, 1]) into horizontal and vertical movement (dx, dy)
             const [dx, dy] = MOVE_DIRECTIONS[key];
 
-            // create a new character with the same character config, except updated position
-            const newCharacter = {
-                ...mycharacterData,
-                position: {
-                    x: currentPosition.x + dx,
-                    y: currentPosition.y + dy,
-                },
-            };
-            // Update the character data for just your character, while retaining all users
-            updateAllCharactersData({...allCharactersData, [MY_CHARACTER_INIT_CONFIG.id]: newCharacter});
+            // Create a reference to the location of user's position in firebase
+            const positionRef = ref(firebaseDatabase, 'users/' + MY_CHARACTER_INIT_CONFIG.id + '/position');
+
+            // Update coordinates/position for the reference of the position
+            set(positionRef, {
+                x: currentPosition.x + dx, 
+                y: currentPosition.y + dy
+            });
+
+
         }
-    }, [mycharacterData, updateAllCharactersData]);
+    }, [mycharacterData]);
 
     const tick = useCallback(() => {
         if (context != null) {
@@ -82,7 +80,8 @@ const GameLoop = ({children, allCharactersData, updateAllCharactersData}) => {
                 class="main-canvas"
             />
             {children}
-        </CanvasContext.Provider>
+            <FirebaseListener allCharactersData={allCharactersData} updateAllCharactersData={updateAllCharactersData}/>
+        </CanvasContext.Provider >
     );
 };
 
