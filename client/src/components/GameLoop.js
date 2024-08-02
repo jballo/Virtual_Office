@@ -79,8 +79,8 @@ const GameLoop = ({children, allCharactersData, updateAllCharactersData}) => {
                 height={TILE_SIZE * MAP_DIMENSIONS.ROWS}
                 class="main-canvas"
             />
+            <FirebaseListener updateAllCharactersData={updateAllCharactersData}/>
             {children}
-            <FirebaseListener allCharactersData={allCharactersData} updateAllCharactersData={updateAllCharactersData}/>
         </CanvasContext.Provider >
     );
 };

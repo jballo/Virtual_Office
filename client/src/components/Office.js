@@ -5,6 +5,7 @@ import ImagesBuffer from './ImagesBuffer';
 import Map from './Map';
 import CanvasContext from './CanvasContext';
 import MyCharacter from './MyCharacter';
+import OtherCharacters from './OtherCharacters';
 import {MAP_DIMENSIONS, TILE_SIZE, MAP_TILE_IMAGES} from './mapConstants';
 
 const Office = ({mapImagesLoaded, gameStatus, webrtcSocket}) => {
@@ -29,10 +30,11 @@ const Office = ({mapImagesLoaded, gameStatus, webrtcSocket}) => {
                 </>
             }
             {gameStatus.mapLoaded && <MyCharacter webrtcSocket={webrtcSocket}/>}
+            {gameStatus.mapLoaded && <OtherCharacters />}
         </>
     );
 };
 
 const mapStateToProps = ({mapImagesLoaded, gameStatus}) => ({mapImagesLoaded, gameStatus});
 
-export default connect(mapStateToProps)(Office);
+export default connect(mapStateToProps, {})(Office);

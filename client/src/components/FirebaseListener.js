@@ -5,24 +5,18 @@ import { MY_CHARACTER_INIT_CONFIG } from './characterConstants';
 
 
 
-export const FirebaseListener = ({allCharactersData, updateAllCharactersData}) => {
+export const FirebaseListener = ({updateAllCharactersData}) => {
     useEffect(() => {
-        // Create a reference to the location of user's position in firebase
-        const positionRef = ref(firebaseDatabase, 'users/' + MY_CHARACTER_INIT_CONFIG.id + '/position');
+        // Create a reference to the users in firebase
+        const usersRef = ref(firebaseDatabase, 'users/');
 
-        let unsubscribe = onValue(positionRef, (positionSnapshot) => {
-            console.log("Listener detected value changes in 'users/[MY_CHARACTER_INIT_CONFIG.id]/positon'");
-            // Retrieve and assign json info for my character into a variable
-            const myCharacterData = allCharactersData[MY_CHARACTER_INIT_CONFIG.id];
-            // Assign the returned position from firebase to variable
-            const newPosition = positionSnapshot.val();
-            // Create a new character with the same character config, except updated position retrieved from firebase
-            const newCharacter = {
-                ...myCharacterData,
-                position: newPosition
-            };
-            // Update the character data for just your character, while retaining all users
-            updateAllCharactersData({...allCharactersData, [MY_CHARACTER_INIT_CONFIG.id]: newCharacter});
+        let unsubscribe = onValue(usersRef, (usersSnapshot) => {
+            console.log("Listener detected value changes in 'users/'");
+                
+            // Retrieve and assign json info for users into a variable
+            const newAllCharacterData = usersSnapshot.val();
+            console.log(newAllCharacterData);
+            updateAllCharactersData(newAllCharacterData);
         });
 
         return () => {
