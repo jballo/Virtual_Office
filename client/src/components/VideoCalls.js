@@ -25,10 +25,6 @@ function VideoCalls({myCharacterData, otherCharactersData, webrtcSocket}) {
         }, {});
     
     const listenPeer = () => {
-        
-        // webrtcSocket.on('receiveOffer', ({callToUserSocketId, callFromUserSocketId, offerSignal}) => {
-        //     console.log('receiving offer from ', callFromUserSocketId, 'to ', callToUserSocketId);
-        // });
 
         webrtcSocket.on('sendOffer', ({callToUserSocketId, callFromUserSocketId, offerSignal}) => {
             console.log('receiving offer from ', callFromUserSocketId, 'to ', callToUserSocketId);

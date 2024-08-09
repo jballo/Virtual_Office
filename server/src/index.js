@@ -15,15 +15,8 @@ app.get('/', (req, res) => {
 });
 
 io.on("connection", (socket) => {
-    // socket.emit("me", socket.id);
     socket.on("sendOffer", ({callToUserSocketId, callFromUserSocketId, offerSignal}) => {
         console.log("sending offer from ", callFromUserSocketId, "to ", callToUserSocketId);
-        // Add logic to send offer signal to client 2
-        // socket.emit('receiveOffer', {
-        //     callToUserSocketId: callToUserSocketId,
-        //     callFromUserSocketId: callFromUserSocketId,
-        //     offerSignal: offerSignal,
-        // });
         socket.emit('sendOffer', {
             callToUserSocketId: callToUserSocketId,
             callFromUserSocketId: callFromUserSocketId,
