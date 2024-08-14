@@ -8,6 +8,7 @@ import { MY_CHARACTER_INIT_CONFIG } from './characterConstants';
 
 function VideoCalls({myCharacterData, otherCharactersData, webrtcSocket}) {
     const [myStream, setMyStream] = useState();
+    const [offersReceived, setOffersReceived] = useState({});
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({video: true, audio: true})
             .then((stream) => {
@@ -15,6 +16,34 @@ function VideoCalls({myCharacterData, otherCharactersData, webrtcSocket}) {
             });
     }, []);
 
+    useEffect(() => {
+        webrtcSocket.on("receiveOffer", payload => {
+            console.log('receiving offer from ', payload.callFromUserSocketId, 'to ', Object.keys(offersReceived));
+            if(!Object.keys(offersReceived).includes(payload.callFromUserSocketId)){
+                setOffersReceived({
+                    ...offersReceived,
+                    [payload.callFromUserSocketId]: payload.offerSignal
+                });
+            }
+        })
+    },[webrtcSocket, offersReceived])
+
+
+    // const listenPeer = () => {
+
+    //     webrtcSocket.on('sendOffer', ({callToUserSocketId, callFromUserSocketId, offerSignal}) => {
+    //         console.log('receiving offer from ', callFromUserSocketId, 'to ', callToUserSocketId);
+    //     });
+
+    // };
+
+    // useEffect(() => {
+    //     listenPeer();
+    // }, []); 
+
+
+
+    
 
     const myUserId = myCharacterData?.id;
     const initiateCallToUsers = Object.keys(otherCharactersData)
@@ -23,18 +52,6 @@ function VideoCalls({myCharacterData, otherCharactersData, webrtcSocket}) {
             filteredObj[key] = otherCharactersData[key];
             return filteredObj;
         }, {});
-    
-    const listenPeer = () => {
-
-        webrtcSocket.on('sendOffer', ({callToUserSocketId, callFromUserSocketId, offerSignal}) => {
-            console.log('receiving offer from ', callFromUserSocketId, 'to ', callToUserSocketId);
-        });
-
-    };
-
-    useEffect(() => {
-        listenPeer();
-    }, []);
     
 
     return <>{
@@ -59,7 +76,7 @@ function VideoCalls({myCharacterData, otherCharactersData, webrtcSocket}) {
 const mapStateToProps = (state) => {
     const myCharacterData = state.allCharacters.users[MY_CHARACTER_INIT_CONFIG.id];
     const otherCharactersData = Object.keys(state.allCharacters.users)
-        .filter(id => id != MY_CHARACTER_INIT_CONFIG.id)
+        .filter(id => id !== MY_CHARACTER_INIT_CONFIG.id)
         .reduce((filteredObj, key) => {
             filteredObj[key] = state.allCharacters.users[key];
             return filteredObj;

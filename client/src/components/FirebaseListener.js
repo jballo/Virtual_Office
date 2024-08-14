@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import {ref, onValue } from 'firebase/database';
 import { firebaseDatabase } from '../firebase/firebase';
-import { MY_CHARACTER_INIT_CONFIG } from './characterConstants';
 
 
 
