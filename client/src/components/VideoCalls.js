@@ -3,6 +3,7 @@ import MyVideo from './MyVideo';
 import InitiatedVideoCall from './InitiatedVideoCall';
 import { connect } from 'react-redux';
 import { MY_CHARACTER_INIT_CONFIG } from './characterConstants';
+import ReceivedVideoCall from './ReceivedVideoCall';
 
 
 
@@ -66,6 +67,24 @@ function VideoCalls({myCharacterData, otherCharactersData, webrtcSocket}) {
                         othersSocketId={initiateCallToUsers[othersUserId].socketId}
                         webrtcSocket={webrtcSocket}
                     />
+                })
+            }
+            {
+                Object.keys(offersReceived).map((othersSocketId) => {
+                    const matchingUserIds = Object.keys(otherCharactersData)
+                        .filter((otherUserId) => otherCharactersData[otherUserId].socketId === othersSocketId);
+                    console.assert(
+                        matchingUserIds.length === 1,
+                        "Unexpected list of matchingUserIds: ",
+                        matchingUserIds
+                    );
+                    return <ReceivedVideoCall 
+                        key={othersSocketId}
+                        mySocketId={myCharacterData.socketId}
+                        myStream={myStream}
+                        othersSocketId={othersSocketId}
+                        webrtcSocket={webrtcSocket}
+                        offerSignal={offersReceived[othersSocketId]} />
                 })
             }
         </div>
