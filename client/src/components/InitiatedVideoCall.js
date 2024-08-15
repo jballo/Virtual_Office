@@ -27,21 +27,7 @@ function InitiatedVideoCall ({ mySocketId, myStream, othersSocketId, webrtcSocke
     useEffect(() => {
         peerRef.current = createPeer(othersSocketId, mySocketId, myStream, webrtcSocket);
 
-        // add logic for listening on the answer signal and make sure that the signal is sent from the callToUserSocketId and print the answer signal
-        // webrtcSocket.on('receiveAnswer', ({ callToUserSocketId, answerSignal }) => {
-        //     console.log("Received answer signal from ", callToUserSocketId);
-        //     if (callToUserSocketId === mySocketId) {
-        //         console.log('Received answer signal:', answerSignal);
-        //         // webrtcSocket.emit('sendAnswer', {
-        //         //     callFromUserSocketId: mySocketId,
-        //         //     callToUserSocketId: othersSocketId,
-        //         //     answerSignal: answerSignal,
-        //         // });
-        //     }else {
-        //         console.log('Socket ID mismatch. Expected:', mySocketId, 'but got:', callToUserSocketId);
-        //     }
-        // });
-        webrtcSocket.off('receiveAnswer');
+        // webrtcSocket.off('receiveAnswer');
         webrtcSocket.on('receiveAnswer', ({ callToUserSocketId, answerSignal }) => {
             console.log("Received answer signal from ", callToUserSocketId);
             if (callToUserSocketId === othersSocketId) {
