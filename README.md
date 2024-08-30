@@ -46,6 +46,8 @@ The application is built using a client-server model with Firebase serving as th
 
 ###
 
+- Utilizes a client-server architecture with React and Redux on the client side for user interactions and state management, Firebase for real-time data synchronization, and WebRTC for peer-to-peer video calls, coordinated through a signaling server.
+
 ![Screenshot 2024-08-29 at 5.00.06 PM.png](https://eraser.imgix.net/workspaces/kkApVpyPTegXTy3FklBz/pq6CBsj5jVTO5seMDPW1K90K7122/lNRjpveEDNwqFGZDh1g52.png?ixlib=js-3.7.0 "Screenshot 2024-08-29 at 5.00.06 PM.png")
 
 ### Architecture with 2 Users
@@ -54,9 +56,13 @@ The application is built using a client-server model with Firebase serving as th
 
 ### Character Movement
 
+- When a user presses the WASD keys, the client updates the character's position in Firebase, which then broadcasts the changes to all connected clients via real-time listeners, ensuring synchronized character movement across all users.
+
 ![Screenshot 2024-08-29 at 4.59.20 PM.png](https://eraser.imgix.net/workspaces/kkApVpyPTegXTy3FklBz/pq6CBsj5jVTO5seMDPW1K90K7122/MOkIizc7csMPWXzTiOEGY.png?ixlib=js-3.7.0 "Screenshot 2024-08-29 at 4.59.20 PM.png")
 
-### Character Movement
+### Application’s Continuous Connection b/t Client & Server
+
+- The Express server facilitates peer connections, transmitting video feeds via WebRTC for seamless interaction and real-time synchronization between users.
 
 ![Screenshot 2024-08-29 at 4.59.39 PM.png](https://eraser.imgix.net/workspaces/kkApVpyPTegXTy3FklBz/pq6CBsj5jVTO5seMDPW1K90K7122/woi8TBADs3PNkPEfEZfYX.png?ixlib=js-3.7.0 "Screenshot 2024-08-29 at 4.59.39 PM.png")
 
@@ -147,6 +153,14 @@ To run the application locally, follow these steps:
 - **Text Chat**: Add a real-time chat feature for text communication.
 - **Screen Sharing**: Implement a screen-sharing feature to enhance collaboration.
 - **Optimized Performance**: Refactor and optimize code to reduce latency and improve performance.
+
+## Demo
+
+Check out the demo of the application in action:
+
+[![Real-Time Virtual Office Application Demo](https://eraser.imgix.net/workspaces/kkApVpyPTegXTy3FklBz/pq6CBsj5jVTO5seMDPW1K90K7122/jHlXzIhKjyCp0AeBbHppq.png?ixlib=js-3.7.0 "Screenshot 2024-08-29 at 11.26.47 PM.png")](https://youtu.be/3ncO2ksM3qY)
+
+> Click on the image above to play the demo.
 
 ## Contributing
 
