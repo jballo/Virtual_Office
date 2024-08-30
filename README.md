@@ -13,8 +13,9 @@ This project is a real-time virtual office web application developed in collabor
 7. [Challenges Faced](#challenges-faced)
 8. [Future Enhancements](#future-enhancements)
 9. [Contributing](#contributing)
-10. [License](#license)
-11. [Contact](#contact)
+10. [Demo](#demo)
+11. [License](#license)
+12. [Contact](#contact)
 
 ## Overview
 
